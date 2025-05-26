@@ -33,10 +33,10 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(),
-        logging.FileHandler(os.path.join(APP_DIR, 'logs', 'crypto_scheduler.log'), encoding='utf-8')
+        logging.FileHandler(os.path.join(APP_DIR, 'logs', 'scheduler.log'), encoding='utf-8')
     ]
 )
-logger = logging.getLogger('crypto_scheduler')
+logger = logging.getLogger('scheduler')
 
 class CryptoTradingScheduler:
     """加密货币交易系统定时任务调度器"""
