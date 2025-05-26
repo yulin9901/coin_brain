@@ -26,6 +26,8 @@ from app.scheduler.tasks import (
     generate_coin_brain_strategy,
     run_crypto_full_workflow
 )
+from app.reporting.daily_report_generator import DailyReportGenerator
+from app.reporting.wechat_reporter import WeChatReporter
 
 # 配置日志
 logging.basicConfig(
@@ -78,6 +80,19 @@ class CryptoTradingScheduler:
             except Exception as e:
                 logger.error(f"交易管理器初始化失败: {e}")
                 self.trading_manager = None
+
+        # 初始化微信报告功能
+        self.wechat_reporter = None
+        self.report_generator = None
+        if getattr(self.config, 'ENABLE_WECHAT_REPORT', False):
+            try:
+                self.wechat_reporter = WeChatReporter(self.config)
+                self.report_generator = DailyReportGenerator(self.config, self.db_config)
+                logger.info("微信报告功能初始化成功")
+            except Exception as e:
+                logger.error(f"微信报告功能初始化失败: {e}")
+                self.wechat_reporter = None
+                self.report_generator = None
 
     def collect_hourly_data(self):
         """收集每小时数据（加密货币新闻和市场数据）"""
@@ -185,6 +200,33 @@ class CryptoTradingScheduler:
         except Exception as e:
             logger.error(f"清理已关闭仓位监控任务失败: {e}")
 
+    def send_daily_wechat_report(self):
+        """发送每日微信报告"""
+        if not self.wechat_reporter or not self.report_generator:
+            logger.info("微信报告功能未启用，跳过发送")
+            return
+
+        try:
+            logger.info("开始生成并发送每日微信报告...")
+
+            # 生成报告数据
+            report_data = self.report_generator.generate_daily_report()
+
+            if not report_data:
+                logger.error("生成报告数据失败")
+                return
+
+            # 发送微信报告
+            success = self.wechat_reporter.send_daily_report(report_data)
+
+            if success:
+                logger.info("每日微信报告发送成功")
+            else:
+                logger.error("每日微信报告发送失败")
+
+        except Exception as e:
+            logger.error(f"发送每日微信报告时出错: {e}")
+
     def setup_schedule(self):
         """设置定时任务计划"""
         # 清除现有的所有任务
@@ -206,6 +248,12 @@ class CryptoTradingScheduler:
 
         # 每日策略生成
         schedule.every().day.at(daily_strategy_time).do(self.generate_daily_strategy)
+
+        # 每日微信报告发送
+        if self.wechat_reporter and self.report_generator:
+            daily_report_time = getattr(self.config, "DAILY_REPORT_TIME", "08:00")
+            schedule.every().day.at(daily_report_time).do(self.send_daily_wechat_report)
+            logger.info(f"已添加每日微信报告任务: {daily_report_time}")
 
         # 如果启用自动交易，添加交易相关任务
         if self.trading_manager:
