@@ -1,0 +1,8 @@
+2025-05-26 14:29:09,579 - crypto_trading - INFO - 启动加密货币交易系统定时任务调度器...
+2025-05-26 14:29:09,580 - crypto_scheduler - INFO - 成功加载配置
+2025-05-26 14:29:09,581 - crypto_scheduler - INFO - 配置的交易对: 14个
+2025-05-26 14:29:09,581 - crypto_scheduler - INFO - 高优先级交易对: ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'LINKUSDT', 'DOGEUSDT', 'DOTUSDT', 'FETUSDT', 'TAOUSDT', 'INJUSDT']
+2025-05-26 14:29:09,581 - crypto_scheduler - INFO - 低优先级交易对: ['BNBUSDT', 'ADAUSDT', 'MATICUSDT', 'AVAXUSDT', 'UNIUSDT']
+2025-05-26 14:29:09,581 - crypto_scheduler - INFO - 定时任务计划已设置: 每小时0分收集数据, 00:05生成每日策略
+2025-05-26 14:29:09,582 - crypto_scheduler - INFO - 调度器线程已启动
+2025-05-26 14:29:09,582 - crypto_scheduler - INFO - 调度器已启动

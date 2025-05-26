@@ -1,0 +1,121 @@
+# Configuration for Crypto Trading Strategy System
+# Copy this file to config.py and fill in your details.
+
+# OpenAI API Key for AI decisions (via Sealos AI Proxy)
+OPENAI_API_KEY = "YOUR_OPENAI_API_KEY_HERE"
+SEALOS_API_URL = "https://api.sealos.run/openai/v1/chat/completions"  # Sealos AI Proxy URL
+
+# Binance API Configuration
+BINANCE_API_KEY = "YOUR_BINANCE_API_KEY_HERE"
+BINANCE_API_SECRET = "YOUR_BINANCE_API_SECRET_HERE"
+BINANCE_TESTNET = True  # Set to False for real trading
+
+# MySQL Database Configuration
+DB_HOST = "localhost"
+DB_PORT = 3306
+DB_USER = "your_db_user"
+DB_PASSWORD = "your_db_password"
+DB_NAME = "crypto_trading"  # Changed from stock_analysis
+
+# News API Sources
+CRYPTOPANIC_API_KEY = "YOUR_CRYPTOPANIC_API_KEY_HERE"  # CryptoPanic API密钥
+COINMARKETCAL_API_KEY = "YOUR_COINMARKETCAL_API_KEY_HERE"  # CoinMarketCal API密钥
+COINMARKETCAL_X_API_KEY = "YOUR_COINMARKETCAL_X_API_KEY_HERE"  # CoinMarketCal X-API-KEY
+
+# 定时任务配置
+# 加密货币市场24/7运行，无需考虑交易日
+# 此设置保留用于可能的维护窗口或特定时间段
+RUN_ALWAYS = True
+
+# 数据收集频率配置
+# 每小时数据收集时间（分钟）
+HOURLY_COLLECTION_MINUTE = 0
+
+# 每日汇总和策略生成时间（小时:分钟）
+# 在每天的这个时间点运行数据汇总和获取交易建议
+DAILY_STRATEGY_TIME = "00:05"  # UTC时间，建议选择交易量较低的时段
+
+# 交易执行配置
+# 是否启用自动交易执行
+ENABLE_AUTO_TRADING = False  # 设置为True启用自动交易（谨慎使用）
+
+# 风险管理配置
+DEFAULT_RISK_PERCENTAGE = 2.0  # 默认风险百分比（每笔交易的风险占总资金的百分比）
+MAX_OPEN_POSITIONS = 5  # 最大同时开放仓位数量
+MIN_TRADE_AMOUNT = 10.0  # 最小交易金额（USDT）
+MAX_LEVERAGE = 3.0  # 最大杠杆倍数
+
+# 价格监控配置
+ENABLE_PRICE_MONITORING = True  # 是否启用价格监控
+PRICE_UPDATE_INTERVAL = 1  # 价格更新间隔（秒）
+WEBSOCKET_RECONNECT_INTERVAL = 30  # WebSocket重连间隔（秒）
+
+# 止盈止损配置
+DEFAULT_STOP_LOSS_PERCENTAGE = 2.0  # 默认止损百分比
+DEFAULT_TAKE_PROFIT_PERCENTAGE = 4.0  # 默认止盈百分比
+ENABLE_TRAILING_STOP = False  # 是否启用移动止损
+
+# 交易对配置
+# 主要交易对列表 - 系统将监控和交易这些币种
+TRADING_PAIRS = [
+    "BTCUSDT",    # 比特币
+    "ETHUSDT",    # 以太坊
+    "SOLUSDT",    # Solana
+    "LINKUSDT",   # Chainlink
+	"DOGEUSDT",   # Dogecoin
+	"DOTUSDT",    # Polkadot
+	"FETUSDT",    # Fetch.ai
+	"TAOUSDT",    # Theta Network
+	"INJUSDT",    # Injective Protocol
+    "BNBUSDT",    # Binance Coin
+    "ADAUSDT",    # Cardano
+    "MATICUSDT",  # Polygon
+    "AVAXUSDT",   # Avalanche
+    "UNIUSDT"     # Uniswap
+]
+
+# 高优先级交易对 - 这些币种会优先处理和监控
+HIGH_PRIORITY_PAIRS = [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT",
+    "LINKUSDT",
+	"DOGEUSDT",
+	"DOTUSDT",
+	"FETUSDT",
+	"TAOUSDT",
+	"INJUSDT"
+]
+
+# 低优先级交易对 - 这些币种在资源充足时处理
+LOW_PRIORITY_PAIRS = [
+    "BNBUSDT",
+    "ADAUSDT",
+    "MATICUSDT",
+    "AVAXUSDT",
+    "UNIUSDT"
+]
+
+# 新闻收集相关的币种符号（不带USDT后缀）
+CRYPTO_SYMBOLS = [
+    "BTC", "ETH", "SOL", "LINK", "DOGE", "DOT", "FET", "TAO", "INJ", 
+    "BNB", "ADA", "MATIC", "AVAX", "UNI"
+]
+
+# 市场数据收集配置
+# K线数据收集的时间间隔
+KLINE_INTERVALS = ["1m", "5m", "1h", "1d"]
+
+# 不同时间间隔的数据量限制
+KLINE_LIMITS = {
+    "1m": 100,    # 1分钟K线，获取100条
+    "5m": 200,    # 5分钟K线，获取200条
+    "1h": 500,    # 1小时K线，获取500条
+    "1d": 1000    # 1天K线，获取1000条
+}
+
+# 回测配置
+BACKTEST_ENABLED = True  # 是否启用回测功能
+BACKTEST_DAYS = 30  # 回测天数
+BACKTEST_PAIRS = ["BTCUSDT", "ETHUSDT", "SOLUSDT"]  # 回测使用的交易对
+
