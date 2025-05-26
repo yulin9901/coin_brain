@@ -20,7 +20,7 @@
 ## 🏗️ 系统架构
 
 ```text
-crypto_trading/
+coin_brain/
 ├── 📁 app/                     # 核心应用模块
 │   ├── 📊 data_collectors/     # 数据收集
 │   │   ├── binance_data_collector.py
@@ -74,7 +74,7 @@ crypto_trading/
 ```bash
 # 1. 克隆项目
 git clone <repository-url>
-cd crypto_trading
+cd coin_brain
 
 # 2. 创建虚拟环境
 python -m venv venv
@@ -85,8 +85,8 @@ source venv/bin/activate  # Linux/Mac
 pip install -r requirements.txt
 
 # 4. 配置数据库
-mysql -u root -p -e "CREATE DATABASE crypto_trading;"
-mysql -u root -p crypto_trading < models/database_schema.sql
+mysql -u root -p -e "CREATE DATABASE coin_brain;"
+mysql -u root -p coin_brain < models/database_schema.sql
 
 # 5. 配置系统
 cp config/config.py.template config/config.py
@@ -148,7 +148,7 @@ python crypto_run.py --run task --task <task_name>
 python crypto_run.py --run task --task collect_hourly_data
 
 # 示例：生成交易策略
-python crypto_run.py --run task --task generate_crypto_trading_strategy
+python crypto_run.py --run task --task generate_coin_brain_strategy
 ```
 
 **可用任务列表：**
@@ -157,7 +157,7 @@ python crypto_run.py --run task --task generate_crypto_trading_strategy
 |------|------|----------|
 | `collect_crypto_news` | 收集加密货币新闻 | 每小时 |
 | `collect_crypto_market_data` | 收集市场数据 | 每小时 |
-| `generate_crypto_trading_strategy` | 生成交易策略 | 每日 |
+| `generate_coin_brain_strategy` | 生成交易策略 | 每日 |
 | `full_workflow` | 完整工作流程 | 按需 |
 
 ### 🧪 测试和示例
@@ -235,7 +235,7 @@ net stop CryptoTradingService
 python scripts/validate_config.py
 
 # 查看日志
-tail -f logs/crypto_trading.log
+tail -f logs/coin_brain.log
 
 # 测试连接
 python test/trading/test_trading_modules.py

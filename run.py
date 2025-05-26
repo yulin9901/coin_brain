@@ -21,7 +21,7 @@ from app.scheduler.tasks import (
     collect_crypto_news,
     collect_crypto_market_data,
     summarize_crypto_daily_data,
-    generate_crypto_trading_strategy,
+    generate_coin_brain_strategy,
     run_crypto_full_workflow
 )
 from app.utils import load_config, get_db_config
@@ -35,10 +35,10 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(),
-        logging.FileHandler(os.path.join(APP_DIR, 'logs', 'crypto_trading.log'), encoding='utf-8')
+        logging.FileHandler(os.path.join(APP_DIR, 'logs', 'coin_brain.log'), encoding='utf-8')
     ]
 )
-logger = logging.getLogger('crypto_trading')
+logger = logging.getLogger('coin_brain')
 
 def run_scheduler():
     """运行加密货币定时任务调度器"""
@@ -74,8 +74,8 @@ def run_task(task_name, date_str=None, trading_pairs=None):
         success = collect_crypto_market_data(trading_pairs)
     elif task_name == "summarize_crypto_daily_data":
         success = summarize_crypto_daily_data(today)
-    elif task_name == "generate_crypto_trading_strategy":
-        success = generate_crypto_trading_strategy(today, trading_pairs)
+    elif task_name == "generate_coin_brain_strategy":
+        success = generate_coin_brain_strategy(today, trading_pairs)
     elif task_name == "collect_hourly_data":
         # 收集加密货币新闻和市场数据
         success1 = collect_crypto_news()
@@ -85,7 +85,7 @@ def run_task(task_name, date_str=None, trading_pairs=None):
         # 汇总数据并生成交易策略
         success1 = summarize_crypto_daily_data(today)
         if success1:
-            success2 = generate_crypto_trading_strategy(today, trading_pairs)
+            success2 = generate_coin_brain_strategy(today, trading_pairs)
             success = success1 and success2
         else:
             success = False
@@ -106,7 +106,7 @@ def main():
     parser = argparse.ArgumentParser(description="加密货币交易系统")
     parser.add_argument("--run", choices=["scheduler", "task"], help="运行模式: scheduler(调度器) 或 task(单个任务)", default="scheduler")
     parser.add_argument("--task", choices=["collect_crypto_news", "collect_crypto_market_data", "summarize_crypto_daily_data",
-                                          "generate_crypto_trading_strategy", "collect_hourly_data", "daily_strategy", "full_workflow"],
+                                          "generate_coin_brain_strategy", "collect_hourly_data", "daily_strategy", "full_workflow"],
                         help="要运行的任务名称")
     parser.add_argument("--date", help="目标日期 (YYYY-MM-DD)，默认为今天")
     parser.add_argument("--pairs", help="交易对列表，用逗号分隔，例如: BTCUSDT,ETHUSDT,SOLUSDT")

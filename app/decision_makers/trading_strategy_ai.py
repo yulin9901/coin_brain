@@ -790,7 +790,7 @@ if __name__ == "__main__":
             "DB_PORT": 3306,
             "DB_USER": "your_db_user",
             "DB_PASSWORD": "your_db_password",
-            "DB_NAME": "crypto_trading"
+            "DB_NAME": "coin_brain"
         }
 
     if db_config["DB_USER"] == "your_db_user" or openai_api_key == "YOUR_OPENAI_API_KEY_HERE":

@@ -133,7 +133,7 @@ def summarize_crypto_daily_data(target_date_str: Optional[str] = None):
         logger.error(f"汇总 {target_date_str} 的加密货币数据时出错: {e}")
         return False
 
-def generate_crypto_trading_strategy(target_date_str: Optional[str] = None, trading_pairs: List[str] = None):
+def generate_coin_brain_strategy(target_date_str: Optional[str] = None, trading_pairs: List[str] = None):
     """生成加密货币交易策略任务"""
     if not target_date_str:
         target_date_str = datetime.date.today().strftime("%Y-%m-%d")
@@ -206,7 +206,7 @@ def run_crypto_full_workflow(target_date_str: Optional[str] = None, trading_pair
         return False
 
     # 4. 生成加密货币交易策略
-    strategy_success = generate_crypto_trading_strategy(target_date_str, trading_pairs)
+    strategy_success = generate_coin_brain_strategy(target_date_str, trading_pairs)
     if not strategy_success:
         logger.error("生成加密货币交易策略失败")
         return False
@@ -232,7 +232,7 @@ if __name__ == "__main__":
     summarize_crypto_daily_data()
 
     # 测试生成加密货币交易策略
-    generate_crypto_trading_strategy()
+    generate_coin_brain_strategy()
 
     # 测试运行完整的加密货币工作流程
     # run_crypto_full_workflow()

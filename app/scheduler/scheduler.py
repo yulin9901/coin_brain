@@ -23,7 +23,7 @@ from app.scheduler.tasks import (
     collect_crypto_news,
     collect_crypto_market_data,
     summarize_crypto_daily_data,
-    generate_crypto_trading_strategy,
+    generate_coin_brain_strategy,
     run_crypto_full_workflow
 )
 
@@ -128,7 +128,7 @@ class CryptoTradingScheduler:
         # 生成交易策略
         try:
             logger.info("生成加密货币交易策略...")
-            strategy_success = generate_crypto_trading_strategy(
+            strategy_success = generate_coin_brain_strategy(
                 target_date_str=today,
                 trading_pairs=self.trading_pairs
             )
