@@ -98,7 +98,7 @@ LOW_PRIORITY_PAIRS = [
 
 # 新闻收集相关的币种符号（不带USDT后缀）
 CRYPTO_SYMBOLS = [
-    "BTC", "ETH", "SOL", "LINK", "DOGE", "DOT", "FET", "TAO", "INJ", 
+    "BTC", "ETH", "SOL", "LINK", "DOGE", "DOT", "FET", "TAO", "INJ",
     "BNB", "ADA", "MATIC", "AVAX", "UNI"
 ]
 
@@ -118,4 +118,40 @@ KLINE_LIMITS = {
 BACKTEST_ENABLED = True  # 是否启用回测功能
 BACKTEST_DAYS = 30  # 回测天数
 BACKTEST_PAIRS = ["BTCUSDT", "ETHUSDT", "SOLUSDT"]  # 回测使用的交易对
+
+# Server酱微信推送配置
+# 获取方式：
+# 1. 访问 https://sct.ftqq.com/ 注册账号
+# 2. 关注"Server酱"微信公众号
+# 3. 在网站上获取SendKey
+# 4. 将SendKey填入下面的配置中
+SERVERCHAN_SENDKEY = "YOUR_SERVERCHAN_SENDKEY_HERE"  # Server酱的SendKey
+ENABLE_WECHAT_REPORT = True  # 是否启用微信报告推送
+DAILY_REPORT_TIME = "08:00"  # 每日报告发送时间（24小时制，北京时间）
+WECHAT_REPORT_TITLE = "CoinBrain每日报告"  # 微信报告标题
+
+# 报告内容配置 - 可以选择性开启/关闭各个模块
+REPORT_INCLUDE_MARKET_SUMMARY = True  # 包含市场概况
+REPORT_INCLUDE_TRADING_STRATEGY = True  # 包含交易策略
+REPORT_INCLUDE_PROFIT_LOSS = True  # 包含盈亏统计
+REPORT_INCLUDE_NEWS_SUMMARY = True  # 包含新闻摘要
+REPORT_INCLUDE_TOP_PERFORMERS = True  # 包含表现最佳的币种
+
+# 微信推送高级配置
+WECHAT_RETRY_TIMES = 3  # 发送失败时的重试次数
+WECHAT_RETRY_DELAY = 5  # 重试间隔（秒）
+WECHAT_TIMEOUT = 30  # 请求超时时间（秒）
+
+# 数据保留策略配置
+# 数据清理任务执行时间
+DATA_CLEANUP_TIME = "02:00"  # 每日数据清理时间（24小时制，建议选择低峰时段）
+
+# 各类数据的保留天数
+HOT_TOPICS_RETENTION_DAYS = 30  # 热点话题数据保留天数
+MARKET_FLOWS_RETENTION_DAYS = 7  # 市场资金流向数据保留天数
+KLINE_RETENTION_DAYS = 30  # K线数据保留天数
+
+# 数据归档配置（可选）
+ENABLE_DATA_ARCHIVING = False  # 是否启用数据归档功能
+ARCHIVE_RETENTION_DAYS = 90  # 归档前数据保留天数
 

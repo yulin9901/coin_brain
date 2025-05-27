@@ -176,7 +176,7 @@ def fetch_coinmarketcal_events(api_key: str, x_api_key: str, limit: int = 30) ->
         "max": limit,
         "dateRangeStart": datetime.date.today().strftime("%Y-%m-%d"),
         "dateRangeEnd": (datetime.date.today() + datetime.timedelta(days=30)).strftime("%Y-%m-%d"),
-        "showOnly": "hot",  # 只显示热门事件
+        # "showOnly": "hot",  # 这个参数已不再支持
         "sortBy": "created_desc"  # 按创建时间降序排序
     }
 
@@ -204,16 +204,34 @@ def fetch_coinmarketcal_events(api_key: str, x_api_key: str, limit: int = 30) ->
                 coins = event.get("coins", [])
                 coin_names = []
                 for coin in coins:
-                    coin_names.append(coin.get("fullname", ""))
+                    coin_name = coin.get("fullname", "")
+                    coin_symbol = coin.get("symbol", "")
+                    if coin_name and coin_symbol:
+                        coin_names.append(f"{coin_name} ({coin_symbol})")
+                    elif coin_symbol:
+                        coin_names.append(coin_symbol)
+                    elif coin_name:
+                        coin_names.append(coin_name)
 
-                coin_str = ", ".join(coin_names) if coin_names else "加密货币"
+                # 构建格式化的内容摘要
+                content_parts = []
 
-                # 如果描述为空，使用标题和币种信息
-                if not description:
-                    description = f"{title} - 相关币种: {coin_str}"
+                # 添加事件描述（如果有且不同于标题）
+                if description and description.strip() != title.strip():
+                    content_parts.append(description.strip())
+
+                # 添加相关币种信息
+                if coin_names:
+                    content_parts.append(f"相关币种: {', '.join(coin_names)}")
+
+                # 如果没有任何描述，使用标题作为基础
+                if not content_parts:
+                    content_parts.append("加密货币相关事件")
+
+                final_description = " | ".join(content_parts)
 
                 # 分析情感
-                sentiment = analyze_sentiment(description)
+                sentiment = analyze_sentiment(final_description)
 
                 # 构建URL
                 url = f"https://coinmarketcal.com/en/event/{event.get('id', '')}"
@@ -223,7 +241,7 @@ def fetch_coinmarketcal_events(api_key: str, x_api_key: str, limit: int = 30) ->
                     "source": "CoinMarketCal",
                     "title": title,
                     "url": url,
-                    "content_summary": description,
+                    "content_summary": final_description,
                     "sentiment": sentiment,
                     "retrieved_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 }

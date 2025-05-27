@@ -25,6 +25,7 @@ from app.data_collectors.binance_data_collector import (
     store_kline_data
 )
 from app.data_processors.daily_summary_processor import process_and_store_crypto_daily_summary
+from app.data_processors.data_cleanup import cleanup_old_data
 from app.decision_makers.trading_strategy_ai import generate_trading_strategy
 
 # 配置日志
@@ -213,6 +214,41 @@ def run_crypto_full_workflow(target_date_str: Optional[str] = None, trading_pair
 
     logger.info(f"成功完成 {target_date_str} 的完整加密货币工作流程")
     return True
+
+def cleanup_old_crypto_data():
+    """清理旧的加密货币数据任务"""
+    logger.info("开始清理旧的加密货币数据...")
+
+    try:
+        config = load_config()
+        db_config = get_db_config(config)
+
+        # 从配置文件读取数据保留策略，如果没有则使用默认值
+        hot_topics_retention = getattr(config, 'HOT_TOPICS_RETENTION_DAYS', 30)
+        market_flows_retention = getattr(config, 'MARKET_FLOWS_RETENTION_DAYS', 7)
+        kline_retention = getattr(config, 'KLINE_RETENTION_DAYS', 30)
+
+        # 执行数据清理
+        cleanup_results = cleanup_old_data(
+            db_config=db_config,
+            hot_topics_retention=hot_topics_retention,
+            market_flows_retention=market_flows_retention,
+            kline_retention=kline_retention
+        )
+
+        total_cleaned = sum(cleanup_results.values())
+        logger.info(f"数据清理完成，总共清理了{total_cleaned}条记录")
+
+        # 记录详细清理结果
+        for table, count in cleanup_results.items():
+            if count > 0:
+                logger.info(f"  {table}: 清理了{count}条记录")
+
+        return True
+
+    except Exception as e:
+        logger.error(f"清理旧数据时出错: {e}")
+        return False
 
 # 测试代码
 if __name__ == "__main__":

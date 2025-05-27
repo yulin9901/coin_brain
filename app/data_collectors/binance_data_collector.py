@@ -10,6 +10,9 @@ import time
 import json
 import datetime
 import logging
+import ssl
+import urllib3
+import requests
 from typing import List, Dict, Any, Optional, Union, Tuple
 
 # 确保app目录在Python路径中
@@ -20,6 +23,9 @@ if APP_DIR not in sys.path:
 from binance.client import Client
 from binance.exceptions import BinanceAPIException, BinanceRequestException
 from app.database.db_manager import DatabaseManager
+
+# 禁用SSL警告（仅在开发环境中使用）
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # 配置日志
 logger = logging.getLogger('binance_data_collector')

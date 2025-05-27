@@ -129,7 +129,7 @@ python scripts/cleanup_config.py
 
 ```bash
 # 启动完整的自动化交易系统
-python crypto_run.py --run scheduler
+python run.py --run scheduler
 ```
 
 系统将自动执行：
@@ -142,13 +142,13 @@ python crypto_run.py --run scheduler
 
 ```bash
 # 运行单个任务
-python crypto_run.py --run task --task <task_name>
+python run.py --run task --task <task_name>
 
 # 示例：收集今日数据
-python crypto_run.py --run task --task collect_hourly_data
+python run.py --run task --task collect_hourly_data
 
 # 示例：生成交易策略
-python crypto_run.py --run task --task generate_coin_brain_strategy
+python run.py --run task --task generate_coin_brain_strategy
 ```
 
 **可用任务列表：**

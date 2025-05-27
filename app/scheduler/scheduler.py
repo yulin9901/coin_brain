@@ -24,7 +24,8 @@ from app.scheduler.tasks import (
     collect_crypto_market_data,
     summarize_crypto_daily_data,
     generate_coin_brain_strategy,
-    run_crypto_full_workflow
+    run_crypto_full_workflow,
+    cleanup_old_crypto_data
 )
 from app.reporting.daily_report_generator import DailyReportGenerator
 from app.reporting.wechat_reporter import WeChatReporter
@@ -227,6 +228,18 @@ class CryptoTradingScheduler:
         except Exception as e:
             logger.error(f"发送每日微信报告时出错: {e}")
 
+    def cleanup_old_data(self):
+        """清理旧数据任务"""
+        try:
+            logger.info("开始执行数据清理任务...")
+            success = cleanup_old_crypto_data()
+            if success:
+                logger.info("数据清理任务完成")
+            else:
+                logger.warning("数据清理任务失败或未完成")
+        except Exception as e:
+            logger.error(f"执行数据清理任务时出错: {e}")
+
     def setup_schedule(self):
         """设置定时任务计划"""
         # 清除现有的所有任务
@@ -254,6 +267,11 @@ class CryptoTradingScheduler:
             daily_report_time = getattr(self.config, "DAILY_REPORT_TIME", "08:00")
             schedule.every().day.at(daily_report_time).do(self.send_daily_wechat_report)
             logger.info(f"已添加每日微信报告任务: {daily_report_time}")
+
+        # 每日数据清理任务
+        data_cleanup_time = getattr(self.config, "DATA_CLEANUP_TIME", "02:00")
+        schedule.every().day.at(data_cleanup_time).do(self.cleanup_old_data)
+        logger.info(f"已添加每日数据清理任务: {data_cleanup_time}")
 
         # 如果启用自动交易，添加交易相关任务
         if self.trading_manager:

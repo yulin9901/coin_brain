@@ -136,16 +136,17 @@ CREATE TABLE IF NOT EXISTS backtest_results (
 
 -- 9. 创建交易策略总结表 (trading_strategy_summaries)
 CREATE TABLE IF NOT EXISTS `trading_strategy_summaries` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `decision_timestamp` DATETIME NOT NULL,
-  `daily_summary_id` INT NOT NULL,
-  `summary_content` TEXT NOT NULL,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `decision_timestamp` DATETIME NOT NULL COMMENT '策略决策时间',
+  `daily_summary_id` INT NOT NULL COMMENT '关联的每日汇总ID',
+  `summary_content` TEXT NOT NULL COMMENT '策略总结内容',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '记录创建时间',
   PRIMARY KEY (`id`),
   KEY `idx_daily_summary_id` (`daily_summary_id`),
   KEY `idx_decision_timestamp` (`decision_timestamp`),
-  CONSTRAINT `fk_summary_daily_summary` FOREIGN KEY (`daily_summary_id`) REFERENCES `daily_summaries` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  CONSTRAINT `fk_summary_daily_summary` FOREIGN KEY (`daily_summary_id`) REFERENCES `daily_summary` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+COMMENT='存储交易策略的总结信息';
 
 -- 10. 当前持仓表 (positions)
 CREATE TABLE IF NOT EXISTS positions (
